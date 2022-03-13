@@ -10,6 +10,8 @@ namespace Nizubot
 
         static string botToken = "";
 
+        static string botPrefix = "nizu";
+
         static void Main(string[] args)
         {
             if (!File.Exists("./Token") && args.Length == 0) {
@@ -37,11 +39,15 @@ namespace Nizubot
 
             discord.MessageCreated += async (s, e) =>
             {
-                if (e.Message.Content.ToLower().StartsWith("ping")) 
-                    await e.Message.RespondAsync("pong!");
+                if (e.Message.Content.ToLower().StartsWith(botPrefix.ToLower()))
+                    CommandHandler.Command(
+                        e,
+                        e.Message.Content.Split(' ',2).Length == 2 ? e.Message.Content.Split(' ',2)[1] : String.Empty
+                    );
             };
 
             await discord.ConnectAsync();
+            Logger.LogSuccess("Nizubot", "Discord Bot Started!");
             await Task.Delay(-1);
         }   
     }
