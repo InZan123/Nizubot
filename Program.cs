@@ -13,7 +13,7 @@ namespace Nizubot
         static void Main(string[] args)
         {
             if (!File.Exists("./Token") && args.Length == 0) {
-                Logger.LogError("Invalid Token","No Token File or Token Argument");
+                Logger.LogError("No Token","No Token File or Argument");
                 return;
             }
             
