@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.IO;
 using DSharpPlus;
+using System.Text.Json;
 
 namespace Nizubot
 {
@@ -12,10 +13,14 @@ namespace Nizubot
 
         static string botPrefix = "nizu";
 
+        public static string[] mcSuggestions;
+
+        public static Random random = new Random();  
+
         static void Main(string[] args)
         {
             if (!File.Exists("./Token") && args.Length == 0) {
-                Logger.LogError("No Token","No Token File or Argument");
+                Logger.LogError("Missing File","No Token File or Argument");
                 return;
             }
             
@@ -24,6 +29,13 @@ namespace Nizubot
             }
 
             botToken = File.ReadAllText("./Token");
+
+            if (!File.Exists("./McSuggestions.json")) {
+                Logger.LogError("Missing File","File McSuggestions.json is Missing");
+                return;
+            }
+
+            mcSuggestions = JsonSerializer.Deserialize<string[]>(File.ReadAllText("./McSuggestions.json"));
 
             MainAsync().GetAwaiter().GetResult();
         }
