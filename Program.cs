@@ -11,7 +11,7 @@ namespace Nizubot
 
         static string botToken = "";
 
-        static string botPrefix = "nizu";
+        public static string botPrefix = "nizu";
 
         public static string[] mcSuggestions;
 
