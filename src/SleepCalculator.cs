@@ -15,9 +15,9 @@ namespace Nizubot {
                     if (parsedTime == null) {await e.Message.RespondAsync("Sorry, I couldn't understand your time format."); return;};
                     
                     await e.Message.RespondAsync(
-                        @$"I recommend that you wake up at `{TimeAfterCycles(parsedTime, -6)}` or `{TimeAfterCycles(parsedTime, -5)}`.
+                        @$"I recommend that you go to sleep at `{TimeAfterCycles(parsedTime, -6)}` or `{TimeAfterCycles(parsedTime, -5)}`.
 
-If you need to you can also wake up at:
+If you need to you can also go to sleep at:
 `{TimeAfterCycles(parsedTime, -4)}`
 `{TimeAfterCycles(parsedTime, -3)}`
 `{TimeAfterCycles(parsedTime, -2)}`
@@ -35,9 +35,9 @@ If you need to you can also wake up at:
                     if (parsedTime == null) {await e.Message.RespondAsync("Sorry, I couldn't understand your time format."); return;};
                     
                     await e.Message.RespondAsync(
-                        @$"I recommend that you go to sleep at `{TimeAfterCycles(parsedTime, 6)}` or `{TimeAfterCycles(parsedTime, 5)}`.
+                        @$"I recommend that you wake up at `{TimeAfterCycles(parsedTime, 6)}` or `{TimeAfterCycles(parsedTime, 5)}`.
                     
-If you need to you can also go to sleep at:
+If you need to you can also wake up at:
 `{TimeAfterCycles(parsedTime, 4)}`
 `{TimeAfterCycles(parsedTime, 3)}`
 `{TimeAfterCycles(parsedTime, 2)}`
