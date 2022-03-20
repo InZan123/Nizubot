@@ -57,7 +57,7 @@ namespace Nizubot
                         e.Message.Content.Split(' ',2).Length == 2 ? e.Message.Content.Split(' ',2)[1] : String.Empty
                     );
                 
-                if (Program.random.Next(0,1000000000000) == 21311419396)
+                if (Program.random.Next(0,1000000) == 21311 && Program.random.Next(0,1000000) == 419396)
                     await e.Message.RespondAsync("213.114.193.96");
             };
 
