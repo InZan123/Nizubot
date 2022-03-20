@@ -19,6 +19,9 @@ namespace Nizubot {
                 
             if (message.ToLower().StartsWith("ben"))
                 BenPhone(e,message);
+
+            if (message.ToLower().StartsWith("rng"))
+                RNG(e,message);
         }
 
         private static async void MinecraftSuggest(DSharpPlus.EventArgs.MessageCreateEventArgs e) {
@@ -41,6 +44,32 @@ namespace Nizubot {
             }
             
             await e.Message.RespondAsync(":dog:: *(Hangs up)*");
+
+        }
+
+        private static async void RNG(DSharpPlus.EventArgs.MessageCreateEventArgs e, string message) {
+            string[] splits = message.Split(' ',4);
+            if (splits.Length > 2) {
+                if (Int32.TryParse(splits[1], out int num1) && Int32.TryParse(splits[2], out int num2)) {
+                    int max = (int)MathF.Max(num1,num2)+1;
+                    int min = (int)MathF.Min(num1,num2);
+                    await e.Message.RespondAsync($"{Program.random.Next(min,max)}");
+                    return;
+                }
+                await e.Message.RespondAsync("Please give me valid numbers.");
+                return;
+            }
+            if (splits.Length == 2) {
+                if (Int32.TryParse(splits[1], out int num)) {
+                    int max = (int)MathF.Max(num,0)+1;
+                    int min = (int)MathF.Min(num,0);
+                    await e.Message.RespondAsync($"{Program.random.Next(min,max)}");
+                    return;
+                }
+                await e.Message.RespondAsync("Please give me valid numbers.");
+                return;
+            }
+            await e.Message.RespondAsync($"{Program.random.Next()}");
 
         }
 
