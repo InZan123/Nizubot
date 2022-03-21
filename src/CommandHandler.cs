@@ -51,22 +51,28 @@ namespace Nizubot {
             string[] splits = message.Split(' ',4);
             if (splits.Length > 2) {
                 if (Int32.TryParse(splits[1], out int num1) && Int32.TryParse(splits[2], out int num2)) {
-                    int max = (int)MathF.Max(num1,num2)+1;
-                    int min = (int)MathF.Min(num1,num2);
-                    await e.Message.RespondAsync($"{Program.random.Next(min,max)}");
-                    return;
+                    if (MathF.Abs(num1) < 2147483584 || MathF.Abs(num2) < 2147483584) {  
+                        int max = (int)MathF.Max(num1,num2)+1;
+                        int min = (int)MathF.Min(num1,num2);
+                        await e.Message.RespondAsync($"{Program.random.Next(min,max)}");
+                        return;
+                    };
                 }
-                await e.Message.RespondAsync("Please give me valid numbers.");
+                await e.Message.RespondAsync("Please give me valid numbers that are below 2147483584.");
                 return;
             }
             if (splits.Length == 2) {
                 if (Int32.TryParse(splits[1], out int num)) {
-                    int max = (int)MathF.Max(num,0)+1;
-                    int min = (int)MathF.Min(num,0);
-                    await e.Message.RespondAsync($"{Program.random.Next(min,max)}");
-                    return;
+                    Console.WriteLine (MathF.Abs(num));
+                    Console.WriteLine(num);
+                    if (MathF.Abs(num) < 2147483584) {
+                        int max = (int)MathF.Max(num,0)+1;
+                        int min = (int)MathF.Min(num,0);
+                        await e.Message.RespondAsync($"{Program.random.Next(min,max)}");
+                        return;
+                    }
                 }
-                await e.Message.RespondAsync("Please give me valid numbers.");
+                await e.Message.RespondAsync("Please give me valid number that is below 2147483584.");
                 return;
             }
             await e.Message.RespondAsync($"{Program.random.Next()}");
