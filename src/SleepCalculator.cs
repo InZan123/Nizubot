@@ -4,6 +4,8 @@ using DSharpPlus;
 namespace Nizubot {
     public class SleepCalculator {
 
+        private static char[] seperator = {':',';','.',','};
+
         public static async void CalculateSleep(DSharpPlus.EventArgs.MessageCreateEventArgs e, string message) {
             string[] commandArgs = message.Split(' ',3).Length > 1 ? message.Split(' ',3) : new string[0];
             if (commandArgs.Length >= 2) {
@@ -58,24 +60,9 @@ or
         }
 
         private static int[] ParseTime(string time) {
-            string[] attempt = time.Split(':',2);
+            string[] attempt = time.Split(seperator,2, StringSplitOptions.RemoveEmptyEntries);
             int[] attemptedParse = TryParseTime(attempt, true);
             
-            if (attemptedParse != null) return attemptedParse;
-
-            attempt = time.Split(';',2);
-            attemptedParse = TryParseTime(attempt, true);
-
-            if (attemptedParse != null) return attemptedParse;
-
-            attempt = time.Split('.',2);
-            attemptedParse = TryParseTime(attempt, true);
-
-            if (attemptedParse != null) return attemptedParse;
-
-            attempt = time.Split(',',2);
-            attemptedParse = TryParseTime(attempt, true);
-
             if (attemptedParse != null) return attemptedParse;
 
             return null;
@@ -88,7 +75,7 @@ or
                     if (Int32.TryParse(time[1], out int minute)) return new int[]{hour,minute,0};
                     try {
                         if (Int32.TryParse(time[1].Substring(0,time[1].Length-2), out int minute2)) {
-                            if (hour == 0) return null;
+                            if (hour < 1 || hour > 12) return null;
                             if (time[1].ToLower().EndsWith("am")) return new int[]{(hour == 12 ? 0 : hour),minute2,1};
 
                             if (time[1].ToLower().EndsWith("pm")) return new int[]{(hour == 12 ? 0 : hour)+12,minute2,1};
@@ -101,6 +88,20 @@ or
                 }
                 return null;
             }
+
+            
+            if (time.Length == 1) {
+                if (Int32.TryParse(time[0].Substring(0,time[0].Length-2), out int hour2)) {
+                    if (hour2 < 1 || hour2 > 12) return null;
+                    if (time[0].ToLower().EndsWith("am")) return new int[]{(hour2 == 12 ? 0 : hour2),0,1};
+
+                    if (time[0].ToLower().EndsWith("pm")) return new int[]{(hour2 == 12 ? 0 : hour2)+12,0,1};
+                };
+                return null;
+            }
+            
+
+            
             return null;
             
 
