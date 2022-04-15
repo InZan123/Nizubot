@@ -22,6 +22,9 @@ namespace Nizubot {
 
             if (message.ToLower().StartsWith("rng"))
                 RNG(e,message);
+            
+            if (message.ToLower().StartsWith("remind"))
+                Reminder.SetReminder(e,message);
         }
 
         private static async void MinecraftSuggest(DSharpPlus.EventArgs.MessageCreateEventArgs e) {

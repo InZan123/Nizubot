@@ -72,7 +72,11 @@ or
             
             if (time.Length == 2) {
                 if (Int32.TryParse(time[0], out int hour)) {
-                    if (Int32.TryParse(time[1], out int minute)) return new int[]{hour,minute,0};
+                    if (hour > 24 || hour < 0) return null;
+                    if (Int32.TryParse(time[1], out int minute)) {
+                        if (minute > 59 || minute < 0) return null;
+                        return new int[]{hour,minute,0};
+                    }
                     try {
                         if (Int32.TryParse(time[1].Substring(0,time[1].Length-2), out int minute2)) {
                             if (hour < 1 || hour > 12) return null;
