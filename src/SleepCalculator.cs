@@ -7,13 +7,14 @@ namespace Nizubot {
         private static char[] seperator = {':',';','.',','};
 
         public static async void CalculateSleep(DSharpPlus.EventArgs.MessageCreateEventArgs e, string message) {
-            string[] commandArgs = message.Split(' ',3).Length > 1 ? message.Split(' ',3) : new string[0];
+            string[] commandArgs = message.Split(' ',4).Length > 1 ? message.Split(' ',4) : new string[0];
+            Console.WriteLine(commandArgs.Length);
             if (commandArgs.Length >= 2) {
                 if (commandArgs[1]=="wake"||commandArgs[1]=="wakeup") {
 
                     if (commandArgs.Length < 3) {await e.Message.RespondAsync("Please give me a time you want to wake up."); return;};
-
-                    int[] parsedTime = ParseTime(commandArgs[2]);
+                
+                    int[] parsedTime = ParseTime(commandArgs[2], commandArgs.Length > 3 ? commandArgs[3] : "");
                     if (parsedTime == null) {await e.Message.RespondAsync("Sorry, I couldn't understand your time format."); return;};
                     
                     await e.Message.RespondAsync(
@@ -33,7 +34,7 @@ If you need to you can also go to sleep at:
 
                     if (commandArgs.Length < 3) {await e.Message.RespondAsync("Please give me a time you want to go to sleep."); return;};
 
-                    int[] parsedTime = ParseTime(commandArgs[2]);
+                    int[] parsedTime = ParseTime(commandArgs[2], commandArgs.Length > 3 ? commandArgs[3] : "");
                     if (parsedTime == null) {await e.Message.RespondAsync("Sorry, I couldn't understand your time format."); return;};
                     
                     await e.Message.RespondAsync(
@@ -59,27 +60,31 @@ or
             );
         }
 
-        private static int[] ParseTime(string time) {
+        private static int[] ParseTime(string time, string funny) {
+            bool funnybug = funny == "nofix";
+            Console.WriteLine(funnybug);
+            Console.WriteLine(funny);
+
             string[] attempt = time.Split(seperator,2, StringSplitOptions.RemoveEmptyEntries);
-            int[] attemptedParse = TryParseTime(attempt, true);
+            int[] attemptedParse = TryParseTime(attempt, true, funnybug);
             
             if (attemptedParse != null) return attemptedParse;
 
             return null;
         }
 
-        private static int[] TryParseTime(string[] time, bool digitalClock) {
+        private static int[] TryParseTime(string[] time, bool digitalClock, bool funnybug) {
             
             if (time.Length == 2) {
                 if (Int32.TryParse(time[0], out int hour)) {
-                    if (hour > 24 || hour < 0) return null;
+                    if ((hour > 24 || hour < 0) && !funnybug) return null;
                     if (Int32.TryParse(time[1], out int minute)) {
-                        if (minute > 59 || minute < 0) return null;
+                        if ((minute > 59 || minute < 0) && !funnybug) return null;
                         return new int[]{hour,minute,0};
                     }
                     try {
                         if (Int32.TryParse(time[1].Substring(0,time[1].Length-2), out int minute2)) {
-                            if (hour < 1 || hour > 12) return null;
+                            if ((hour < 1 || hour > 12) && !funnybug) return null;
                             if (time[1].ToLower().EndsWith("am")) return new int[]{(hour == 12 ? 0 : hour),minute2,1};
 
                             if (time[1].ToLower().EndsWith("pm")) return new int[]{(hour == 12 ? 0 : hour)+12,minute2,1};
@@ -96,7 +101,7 @@ or
             
             if (time.Length == 1) {
                 if (Int32.TryParse(time[0].Substring(0,time[0].Length-2), out int hour2)) {
-                    if (hour2 < 1 || hour2 > 12) return null;
+                    if ((hour2 < 1 || hour2 > 12) && !funnybug) return null;
                     if (time[0].ToLower().EndsWith("am")) return new int[]{(hour2 == 12 ? 0 : hour2),0,1};
 
                     if (time[0].ToLower().EndsWith("pm")) return new int[]{(hour2 == 12 ? 0 : hour2)+12,0,1};
