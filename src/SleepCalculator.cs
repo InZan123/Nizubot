@@ -8,7 +8,6 @@ namespace Nizubot {
 
         public static async void CalculateSleep(DSharpPlus.EventArgs.MessageCreateEventArgs e, string message) {
             string[] commandArgs = message.Split(' ',4).Length > 1 ? message.Split(' ',4) : new string[0];
-            Console.WriteLine(commandArgs.Length);
             if (commandArgs.Length >= 2) {
                 if (commandArgs[1]=="wake"||commandArgs[1]=="wakeup") {
 
@@ -62,8 +61,6 @@ or
 
         private static int[] ParseTime(string time, string funny) {
             bool funnybug = funny == "nofix";
-            Console.WriteLine(funnybug);
-            Console.WriteLine(funny);
 
             string[] attempt = time.Split(seperator,2, StringSplitOptions.RemoveEmptyEntries);
             int[] attemptedParse = TryParseTime(attempt, true, funnybug);
